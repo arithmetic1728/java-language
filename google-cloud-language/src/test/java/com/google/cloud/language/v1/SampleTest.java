@@ -32,18 +32,9 @@ public class SampleTest {
     return client;
   }
 
-  // Create a client without API key. The API key can be provided via GOOGLE_API_KEY env var.
-  public LanguageServiceClient createClient() throws Exception {
-    LanguageServiceClient client = LanguageServiceClient.create();
-    return client;
-  }
-
   @Test
   public void analyzeSentimentTest() throws Exception {
-    // There are two ways to pass an API key to client.
-    // (1) via stubsettings, call "createClientWithApiKey(String apiKey)" method.
-    // (2) via GOOGLE_API_KEY env var, call "createClient()" method.
-    LanguageServiceClient client = createClient();
+    LanguageServiceClient client = createClientWithApiKey("<FILL IN THE API KEY>");
 
     // set the GCS Content URI path to the file to be analyzed
     Document doc =
