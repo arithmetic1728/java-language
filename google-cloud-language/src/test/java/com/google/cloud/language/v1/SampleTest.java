@@ -17,7 +17,7 @@
 package com.google.cloud.language.v1;
 
 import com.google.cloud.language.v1.Document.Type;
-import com.google.cloud.language.v1.stub.LanguageServiceStubSettings;
+import com.google.cloud.language.v1.LanguageServiceSettings;
 import java.util.Map;
 
 import org.junit.Test;
@@ -26,9 +26,9 @@ public class SampleTest {
 
   // Create a client by providing API key to stubsettings.
   public LanguageServiceClient createClientWithApiKey(String apiKey) throws Exception {
-    LanguageServiceStubSettings settings = LanguageServiceStubSettings
+    LanguageServiceSettings settings = LanguageServiceSettings
         .newBuilder().setApiKey(apiKey).build();
-    LanguageServiceClient client = LanguageServiceClient.create(settings.createStub());
+    LanguageServiceClient client = LanguageServiceClient.create(settings);
     return client;
   }
 
