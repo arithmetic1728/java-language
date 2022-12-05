@@ -17,7 +17,14 @@
 package com.google.cloud.language.v1;
 
 import com.google.cloud.language.v1.Document.Type;
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
+import com.google.api.gax.rpc.FixedHeaderProvider;
+import com.google.api.gax.rpc.HeaderProvider;
+import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.language.v1.LanguageServiceSettings;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -25,16 +32,33 @@ import org.junit.Test;
 public class SampleTest {
 
   // Create a client by providing API key to stubsettings.
-  public LanguageServiceClient createClientWithApiKey(String apiKey) throws Exception {
-    LanguageServiceSettings settings = LanguageServiceSettings
-        .newBuilder().setApiKey(apiKey).build();
+  // public LanguageServiceClient createClientWithApiKey(String apiKey) throws Exception {
+  //   LanguageServiceSettings settings = LanguageServiceSettings
+  //       .newBuilder().setApiKey(apiKey).build();
+  //   LanguageServiceClient client = LanguageServiceClient.create(settings);
+  //   return client;
+  // }
+
+  public LanguageServiceClient createClientWithApiKey2(String apiKey) throws Exception {
+    // Manually set the api key header
+    Map<String, String> header = new HashMap<String, String>() { {put("x-goog-api-key", apiKey);}};
+    FixedHeaderProvider headerProvider = FixedHeaderProvider.create(header);
+
+    // Use empty credential, otherwise it will raise ADC not set error
+    FixedCredentialsProvider credentialProvider = FixedCredentialsProvider.create(null);
+
+    // Create the client
+    TransportChannelProvider transportChannelProvider = InstantiatingGrpcChannelProvider.newBuilder().setHeaderProvider(headerProvider).build();
+    LanguageServiceSettings settings = LanguageServiceSettings.newBuilder().setTransportChannelProvider(transportChannelProvider).setCredentialsProvider(credentialProvider).build();
     LanguageServiceClient client = LanguageServiceClient.create(settings);
     return client;
   }
 
   @Test
   public void analyzeSentimentTest() throws Exception {
-    LanguageServiceClient client = createClientWithApiKey("<FILL IN THE API KEY>");
+    // LanguageServiceClient client = createClientWithApiKey("<FILL IN THE API KEY>");
+    LanguageServiceClient client = createClientWithApiKey2("<FILL IN THE API KEY>");
+    
 
     // set the GCS Content URI path to the file to be analyzed
     Document doc =
